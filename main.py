@@ -1,6 +1,11 @@
 from confluent_kafka import Consumer, KafkaException, KafkaError
 import json
 from data_processing import proc_data
+from dbconn import conn
+
+
+
+
 # Kafka Consumer configuration
 consumer_config = {
     'bootstrap.servers': 'localhost:9092',  # Replace with your broker(s)
@@ -28,6 +33,7 @@ try:
             # Successfully received a message
             message = json.loads(msg.value().decode('utf-8'))
             print(f"Received message: {proc_data(message)}")
+            conn(proc_data(message))
 except KeyboardInterrupt:
     print("\nStopped by user.")
 finally:
