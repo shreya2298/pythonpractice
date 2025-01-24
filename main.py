@@ -2,7 +2,7 @@ from confluent_kafka import Consumer, KafkaException, KafkaError
 import json
 from data_processing import proc_data
 from dbconn import conn
-
+from dbconnsql import insert_string
 
 
 
@@ -34,6 +34,8 @@ try:
             message = json.loads(msg.value().decode('utf-8'))
             print(f"Received message: {proc_data(message)}")
             conn(proc_data(message))
+            insert_string(proc_data(message))
+            
 except KeyboardInterrupt:
     print("\nStopped by user.")
 finally:
